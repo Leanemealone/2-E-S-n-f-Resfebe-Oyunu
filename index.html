@@ -28,24 +28,24 @@
 </head>
 <body>
 
-<div id="authModal" class="modal">
-    <div class="modal-content">
-        <h2>Öğrenci Girişi</h2>
-        
-        <label for="studentNameSelect">Adını Seç</label>
-        <select id="studentNameSelect" required>
-             <option value="">-- Adınızı Seçin --</option>
-             </select>
-        
-        <label for="studentPassword">Şifre</label>
-        <input type="password" id="studentPassword" placeholder="Şifreniz" required> 
-
-        <button id="loginBtn" class="auth-btn login-btn">Oyuna Başla</button>
-        <p id="authMessage" class="error-message"></p>
-    </div>
-</div>
-
 <div class="wrapper">
+    
+    <section id="authModal" class="auth-container"> 
+        <div class="modal-content">
+            <h2>Öğrenci Girişi</h2>
+            
+            <label for="studentNameSelect">Adını Seç</label>
+            <select id="studentNameSelect" required>
+                 <option value="">-- Adınızı Seçin --</option>
+                 </select>
+            
+            <label for="studentPassword">Şifre</label>
+            <input type="password" id="studentPassword" placeholder="Şifreniz" required> 
+
+            <button id="loginBtn" class="auth-btn login-btn">Oyuna Başla</button>
+            <p id="authMessage" class="error-message"></p>
+        </div>
+    </section>
     
     <header class="game-header">
         <div class="score-display">Oturum Puanı: <span id="currentScore">0</span></div>
@@ -67,7 +67,7 @@
             </div>
     </main>
 
-   <aside class="leaderboard" id="leaderboardAside">
+    <aside class="leaderboard">
         <h2>🏆 Liderlik Tablosu</h2>
         <ul id="topScores">
             </ul>
@@ -76,11 +76,10 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.js"></script>
-
 <audio id="successSound" src="success.mp3" preload="auto"></audio>
 <audio id="errorSound" src="error.mp3" preload="auto"></audio>
-
 <script src="app.js"></script>
 </body>
 </html>
+
 
