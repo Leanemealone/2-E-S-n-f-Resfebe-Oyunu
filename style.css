@@ -6,13 +6,15 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background-color: #f0f4f7; /* Açık, göz yormayan zemin */
+    /* YENİ: Canlı, açık mavi zemin */
+    background-color: #e0f7fa; 
     color: #333;
 }
 
 h1, h2 {
     font-weight: 700;
-    color: #2c3e50; /* Koyu Mavi/Gri Başlıklar */
+    /* YENİ: Koyu mor ton */
+    color: #673ab7; 
     text-align: center;
 }
 
@@ -20,13 +22,13 @@ h1, h2 {
 /* 2. LAYOUT (Masaüstü ve Mobil Düzeni)    */
 /* ======================================= */
 
-/* Ana Sarıcı: Mobil için dikey, masaüstü için yatay sıralama */
+/* Ana Sarıcı */
 .wrapper {
     width: 95%;
     max-width: 1200px;
     margin: 20px auto;
     display: flex;
-    flex-direction: column; /* Varsayılan: Dikey (Mobil) */
+    flex-direction: column; 
     align-items: center;
     gap: 20px;
 }
@@ -34,13 +36,13 @@ h1, h2 {
 /* Masaüstü (768px üzeri) için Yan Yana Düzen */
 @media (min-width: 768px) {
     .wrapper {
-        flex-direction: row; /* Yatay sırala */
+        flex-direction: row; 
         align-items: flex-start;
         justify-content: center;
         gap: 20px;
     }
     .game-container {
-        flex-grow: 1; /* Ana oyun alanının büyümesini sağlar */
+        flex-grow: 1; 
         max-width: 800px;
     }
 }
@@ -51,13 +53,15 @@ h1, h2 {
     max-width: 1200px;
     display: flex;
     justify-content: space-around;
-    padding: 10px 0;
-    background-color: #3498db; /* Mavi arka plan */
+    padding: 15px 0; /* Dolgu artırıldı */
+    /* YENİ: Canlı turuncu/sarı arka plan */
+    background-color: #ff9800; 
     color: white;
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: bold;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* Köşeler yumuşatıldı */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid #fbc02d; /* Çerçeve eklendi */
 }
 .score-display, .timer-display {
     padding: 5px 15px;
@@ -67,7 +71,22 @@ h1, h2 {
 }
 .game-header span {
     font-size: 1.1em;
-    color: #ffeb3b; /* Vurgu sarısı */
+    /* YENİ: Vurgu için beyaz kullanıldı */
+    color: white; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Hafif gölge */
+}
+
+/* YENİ KRİTİK ZAMANLAYICI SINIFI */
+.timer-display.critical span {
+    color: #e53935; /* Koyu Kırmızı */
+    font-weight: 900;
+    animation: pulse 1s infinite; /* Titreme animasyonu */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 
@@ -78,13 +97,14 @@ h1, h2 {
 /* Oyun Konteyneri (İçerik) */
 .game-container {
     background-color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Daha belirgin gölge */
+    border-radius: 16px; /* Daha yumuşak köşeler */
+    padding: 30px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 5px solid #ff9800; /* Ana oyun alanına renkli çerçeve */
 }
 
 /* Görsel Alanı */
@@ -92,10 +112,11 @@ h1, h2 {
     width: 100%;
     max-width: 600px;
     margin: 15px auto;
-    border: 3px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* YENİ: Parlak çerçeve */
+    border: 5px solid #673ab7; 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
     background-color: white;
-    border-radius: 6px;
+    border-radius: 10px;
     overflow: hidden;
 }
 .image-area img {
@@ -108,26 +129,28 @@ h1, h2 {
 .word-input-area {
     display: flex;
     justify-content: center;
-    gap: 8px;
-    margin: 25px 0;
+    gap: 10px; /* Boşluk artırıldı */
+    margin: 30px 0;
 }
 .letter-box {
-    width: 50px;
-    height: 50px;
+    width: 55px; /* Boyut artırıldı */
+    height: 55px; /* Boyut artırıldı */
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid #bdc3c7;
-    border-radius: 6px;
-    font-size: 2em;
-    font-weight: 700;
+    border: 4px solid #673ab7; /* Mor çerçeve */
+    border-radius: 10px; /* Daha köşeli yapı */
+    font-size: 2.2em;
+    font-weight: 900;
     color: #333;
-    background-color: #ecf0f1;
-    transition: border-color 0.2s, background-color 0.2s;
+    /* YENİ: Açık sarımsı zemin */
+    background-color: #fffde7; 
+    transition: border-color 0.2s, background-color 0.2s, transform 0.1s;
 }
 .letter-box.current-input {
-    border-color: #3498db; /* Mavi Vurgu */
-    background-color: #f9fbfb;
+    border-color: #ff9800; /* Turuncu Vurgu */
+    background-color: #ffcc80; /* Açık Turuncu Zemin */
+    transform: scale(1.05);
 }
 
 /* Sanal Klavye */
@@ -137,55 +160,59 @@ h1, h2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 6px;
-    padding: 10px;
-    background-color: #f0f4f7;
-    border-radius: 10px;
-    margin-top: 20px;
+    gap: 8px; /* Boşluk artırıldı */
+    padding: 15px;
+    /* YENİ: Açık Mavi Klavye Zemini */
+    background-color: #bbdefb; 
+    border-radius: 15px;
+    margin-top: 25px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
 /* Klavye Tuşları */
 .key {
     cursor: pointer;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 10px;
+    font-weight: 700;
     transition: background-color 0.2s, transform 0.1s;
-    background-color: #1abc9c; /* Temel Turkuaz */
+    /* YENİ: Canlı yeşil ton */
+    background-color: #4caf50; 
     color: white;
     border: none;
-    padding: 12px 5px;
-    font-size: 1em;
+    padding: 15px 5px;
+    font-size: 1.1em;
     
     /* Masaüstü: 10 tuş sığacak şekilde ayar */
-    flex-basis: calc(9.5% - 6px); 
-    min-width: 30px;
-    box-shadow: 0 3px #16a085;
+    flex-basis: calc(9.5% - 8px); 
+    min-width: 35px;
+    /* YENİ: Daha belirgin 3D gölge */
+    box-shadow: 0 4px #388e3c;
 }
 
 .key:hover {
-    background-color: #16a085;
-    transform: translateY(-1px);
+    background-color: #388e3c;
+    transform: translateY(-2px);
 }
 .key:active {
-    transform: translateY(3px);
-    box-shadow: 0 0 #16a085;
+    transform: translateY(2px);
+    box-shadow: 0 0 #388e3c;
 }
 
 .key.delete-key {
-    background-color: #e74c3c; /* Kırmızı (Silme) */
-    box-shadow: 0 3px #c0392b;
-    flex-basis: calc(20% - 6px); /* Sil ve Onayla Tuşları daha geniş */
+    background-color: #f44336; /* Kırmızı (Silme) */
+    box-shadow: 0 4px #d32f2f;
+    flex-basis: calc(20% - 8px); 
 }
 .key.delete-key:hover {
-    background-color: #c0392b;
+    background-color: #d32f2f;
 }
 .key.submit-key {
-    background-color: #3498db;
-    box-shadow: 0 3px #2980b9;
-    flex-basis: calc(20% - 6px);
+    background-color: #2196f3; /* Parlak Mavi */
+    box-shadow: 0 4px #1976d2;
+    flex-basis: calc(20% - 8px);
 }
 .key.submit-key:hover {
-    background-color: #2980b9;
+    background-color: #1976d2;
 }
 
 
@@ -193,19 +220,20 @@ h1, h2 {
 /* 4. LİDERLİK TABLOSU (ASIDE)             */
 /* ======================================= */
 .leaderboard {
-    width: 100%; /* Mobil tam genişlik */
-    max-width: 300px; /* Masaüstü genişliği */
-    padding: 20px;
-    background-color: #2c3e50; /* Koyu arka plan */
+    width: 100%; 
+    max-width: 300px; 
+    padding: 25px;
+    /* YENİ: Koyu mor arka plan */
+    background-color: #673ab7; 
     color: white;
-    border-radius: 12px;
-    margin-top: 0; /* Wrapper'daki gap halledecek */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 3px solid #ff9800; /* Turuncu çerçeve */
 }
 
 .leaderboard h2 {
     color: white;
-    border-bottom: 2px solid #1abc9c;
+    border-bottom: 3px solid #ff9800; /* Turuncu ayırıcı */
     padding-bottom: 10px;
     margin-bottom: 15px;
 }
@@ -214,13 +242,19 @@ h1, h2 {
     padding: 0;
 }
 .leaderboard li {
-    padding: 10px;
-    margin-bottom: 8px;
-    background-color: #34495e;
-    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 10px;
+    /* YENİ: Daha açık mor */
+    background-color: #7e57c2; 
+    border-radius: 8px;
     font-weight: 600;
     display: flex;
     justify-content: space-between;
+    transition: transform 0.2s;
+}
+.leaderboard li:hover {
+    transform: translateX(5px);
+    background-color: #9575cd;
 }
 
 /* ======================================= */
@@ -240,41 +274,48 @@ h1, h2 {
 }
 .modal-content {
     background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
     text-align: center;
+    border: 5px solid #ff9800; /* Turuncu çerçeve */
 }
 .modal-content h2 {
-    color: #3498db;
+    color: #2196f3; /* Parlak Mavi */
+    margin-bottom: 20px;
 }
 .modal-content input, .modal-content select {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
     box-sizing: border-box;
-    font-size: 1em;
+    font-size: 1.1em;
 }
 .auth-btn {
     width: 100%;
-    background-color: #1abc9c;
+    background-color: #4caf50; /* Canlı Yeşil */
     color: white;
     border: none;
-    padding: 12px;
+    padding: 15px;
     font-weight: 700;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
     transition: background-color 0.2s;
+    box-shadow: 0 4px #388e3c;
 }
 .auth-btn:hover {
-     background-color: #16a085;
+     background-color: #388e3c;
+}
+.auth-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 #388e3c;
 }
 .error-message {
-    color: #e74c3c;
+    color: #e53935;
     font-weight: bold;
     margin-top: 15px;
 }
@@ -288,36 +329,36 @@ h1, h2 {
         padding: 10px;
     }
     .game-header {
-        font-size: 1em;
+        font-size: 1.1em;
         padding: 10px;
     }
 
     /* Harf Kutuları */
     .letter-box {
-        width: 35px;
-        height: 35px;
-        font-size: 1.5em; 
+        width: 40px;
+        height: 40px;
+        font-size: 1.8em; 
     }
 
-    /* Klavye İyileştirmesi: Daha az sütun, daha büyük tuşlar */
+    /* Klavye İyileştirmesi */
     #virtual-keyboard {
-        gap: 4px; /* Tuşlar arasındaki boşluğu azalt */
+        gap: 5px; 
+        padding: 10px;
     }
     .key {
-        font-size: 1em; /* Tuş fontu büyüdü */
-        padding: 10px 0; /* İç dolgu arttı */
-        /* 8 tuş sığacak şekilde ayarlandı (12.5% - 4px boşluk) */
-        flex-basis: calc(12.5% - 4px); 
+        font-size: 0.9em; 
+        padding: 12px 0; 
+        /* 8 tuş sığacak şekilde ayarlandı */
+        flex-basis: calc(12.5% - 5px); 
     }
     
     /* Aksiyon tuşları (SİL/ONAYLA) */
     .key.submit-key, .key.delete-key {
-        /* Tek bir tuş 2 sütun genişliğinde olsun */
-        flex-basis: calc(25% - 4px); 
-        font-size: 0.9em;
+        flex-basis: calc(25% - 5px); 
+        font-size: 0.8em;
     }
     
-    /* Mesaj Alanı - Sadece mobil için font küçültme */
+    /* Mesaj Alanı */
     .game-message {
         padding: 10px;
         font-size: 1em;
@@ -329,16 +370,17 @@ h1, h2 {
 .game-message {
     width: 90%;
     max-width: 600px;
-    padding: 15px;
-    margin-bottom: 15px;
+    padding: 18px;
+    margin-bottom: 20px;
     text-align: center;
     font-weight: 700;
-    font-size: 1.2em;
-    border-radius: 8px;
-    opacity: 0; /* Başlangıçta gizli */
+    font-size: 1.4em;
+    border-radius: 10px;
+    opacity: 0; 
     visibility: hidden;
     transition: opacity 0.5s, visibility 0.5s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 3px solid; /* Renk başarı/hata sınıfında atanacak */
 }
 
 .game-message.show {
@@ -350,10 +392,12 @@ h1, h2 {
 .game-message.success {
     background-color: #2ecc71; /* Zümrüt Yeşili */
     color: white;
+    border-color: #1abc9c;
 }
 
 /* Yanlış Cevap Mesajı */
 .game-message.error {
     background-color: #e74c3c; /* Kırmızı */
     color: white;
+    border-color: #c0392b;
 }
