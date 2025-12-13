@@ -1,5 +1,18 @@
 // index.html'de Firebase SDK'larının yüklendiği ve const db tanımlandığı varsayılır.
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 🔥 MOBİL ZOOM'U ENGELLEME KODU (Mutlaka ekle!) 🔥
+    // Bu, tarayıcıya varsayılan çift dokunma ve sıkıştırma hareketlerini devre dışı bırakmasını söyler.
+    document.documentElement.style.touchAction = 'none';
+    document.body.style.touchAction = 'none';
+    
+    // Alternatif (bazı tarayıcılar için): Çift tıklamayı engelle
+    document.addEventListener('dblclick', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+    }, { passive: false });
+    // ----------------------------------------------------
+    
     // --- Arayüz Elemanları ---
     const studentNameSelect = document.getElementById('studentNameSelect');
     const gameContainer = document.querySelector('.game-container');
@@ -437,3 +450,4 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStudentList();
     setupLeaderboardListener(); 
 });
+
