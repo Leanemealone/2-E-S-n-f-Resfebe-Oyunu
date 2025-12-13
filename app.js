@@ -3,13 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Arayüz Elemanları ---
     const studentNameSelect = document.getElementById('studentNameSelect');
     const gameContainer = document.querySelector('.game-container');
-    const authModal = document.getElementById('authModal');
+    const authModal = document.getElementById('authModal'); // Artık <section>
     const loginBtn = document.getElementById('loginBtn');
     const studentPassword = document.getElementById('studentPassword');
     const authMessage = document.getElementById('authMessage');
     const leaderboardList = document.getElementById('topScores');
-    // 🔥 Değişiklik: Leaderboard aside elementini yakala (index.html'e ID eklemen gerekebilir)
-    const leaderboardAside = document.querySelector('.leaderboard'); 
+    const leaderboardAside = document.querySelector('.leaderboard'); // Aside elementini yakala
     const gameMessage = document.getElementById('gameMessage'); 
     
     // Temel oyun elemanları
@@ -35,12 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let allWords = []; 
 
     // --- ZAMANLAYICI DEĞİŞKENLERİ ---
-    let gameTimer = 120; // TOPLAM OYUN SÜRESİ (2 dakika)
+    let gameTimer = 120; 
     let countdownInterval;
 
     // 🔥 BAŞLANGIÇ GÖRÜNÜRLÜK DURUMU 🔥
-    // Oyun gizli kalır, liderlik tablosu görünür kalır.
-    gameContainer.style.display = 'none';
+    // Liderlik tablosu her zaman görünür (CSS'ten hallediliyor).
+    gameContainer.style.display = 'none'; // Oyun gizli
+    authModal.style.display = 'flex';     // Giriş ekranı gösteriliyor
 
     // Sesleri hazırlar.
     function primeAudio() {
@@ -109,9 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentUserUid = selectedUid;
                 currentUserName = studentNameSelect.options[studentNameSelect.selectedIndex].textContent;
                 
-                authModal.style.display = 'none';
-                gameContainer.style.display = 'flex';
-                // 🔥 ÖNEMLİ DEĞİŞİKLİK: leaderboardAside'ı GİZLEME ARTIK!
+                authModal.style.display = 'none'; // Giriş ekranını gizle
+                gameContainer.style.display = 'flex'; // Oyun konteynerini göster
+                // Liderlik tablosu zaten görünür kalıyor.
                 
                 primeAudio(); 
                 initializeGame(); 
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ====================================================
-    // 2. SKOR YÖNETİMİ VE LİDERLİK TABLOSU (OTURUM BAZLI)
+    // 2. SKOR YÖNETİMİ VE LİDERLİK TABLOSU
     // ====================================================
 
     function updateScoreDisplay(newScore) {
@@ -167,11 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupLeaderboardListener() {
-        // Liderlik tablosu en yüksek skorlu oturumları listeler.
+        // Limit 30 olarak kalır (önceki düzeltmeden)
         db.collection('skorlar')
             .orderBy('score', 'desc') 
             .orderBy('timestamp', 'desc') 
-            .limit(30) // 30 skoru koruyoruz
+            .limit(30) 
             .onSnapshot(snapshot => {
                 leaderboardList.innerHTML = '';
                 
@@ -201,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateScoreDisplay(0); 
 
         await fetchAllWords(); 
-        // setupLeaderboardListener() artık initializeGame içinde değil, sayfa yüklenir yüklenmez çalışıyor.
         startTimer(); 
         fetchRandomWord(); 
     }
@@ -308,17 +307,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             gameContainer.style.display = 'none';
-            authModal.style.display = 'flex'; 
-            // 🔥 ÖNEMLİ DEĞİŞİKLİK: leaderboardAside'ı GÖSTERME ARTIK! Zaten görünürdü.
+            authModal.style.display = 'flex'; // Giriş ekranını tekrar göster
         }, 1000); 
     }
 
     // ====================================================
     // 4. SANAL KLAVYE İŞLEMLERİ
     // ====================================================
-    // (Bu kısım değişmediği için kısaltıldı)
-    
-    // ... [createKeyButton, keys, deleteKey, submitKey, event listener, handleLetterInput, handleDelete fonksiyonları aynı kalır] ...
 
     function createKeyButton(text, dataKey) {
         const button = document.createElement('button');
@@ -381,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFocus();
     }
 
-
     // --- KONTROL VE PUANLAMA ---
     function handleSubmit() {
         const enteredWord = currentLetters.join('');
@@ -437,5 +431,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 🔥 BAŞLANGIÇTA ÇALIŞACAK KOD 🔥
     loadStudentList();
-    setupLeaderboardListener(); // Liderlik tablosu sayfa yüklenir yüklenmez (login ekranında da) çekilir.
+    setupLeaderboardListener(); 
 });
