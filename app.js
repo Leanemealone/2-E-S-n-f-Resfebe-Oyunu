@@ -3,12 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Arayüz Elemanları ---
     const studentNameSelect = document.getElementById('studentNameSelect');
     const gameContainer = document.querySelector('.game-container');
-    const authModal = document.getElementById('authModal'); // Artık <section>
+    const authModal = document.getElementById('authModal'); 
     const loginBtn = document.getElementById('loginBtn');
     const studentPassword = document.getElementById('studentPassword');
     const authMessage = document.getElementById('authMessage');
     const leaderboardList = document.getElementById('topScores');
-    const leaderboardAside = document.querySelector('.leaderboard'); // Aside elementini yakala
+    // 🔥 Liderlik tablosu aside elementini yakala
+    const leaderboardAside = document.querySelector('.leaderboard'); 
     const gameMessage = document.getElementById('gameMessage'); 
     
     // Temel oyun elemanları
@@ -38,9 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let countdownInterval;
 
     // 🔥 BAŞLANGIÇ GÖRÜNÜRLÜK DURUMU 🔥
-    // Liderlik tablosu her zaman görünür (CSS'ten hallediliyor).
-    gameContainer.style.display = 'none'; // Oyun gizli
-    authModal.style.display = 'flex';     // Giriş ekranı gösteriliyor
+    // Giriş ekranında, oyun gizli, giriş formu ve Liderlik tablosu görünüyor.
+    gameContainer.style.display = 'none';      
+    authModal.style.display = 'flex';          
+    leaderboardAside.style.display = 'flex';   
+    
 
     // Sesleri hazırlar.
     function primeAudio() {
@@ -108,10 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (enteredPassword === expectedPassword) {
                 currentUserUid = selectedUid;
                 currentUserName = studentNameSelect.options[studentNameSelect.selectedIndex].textContent;
-                
-                authModal.style.display = 'none'; // Giriş ekranını gizle
-                gameContainer.style.display = 'flex'; // Oyun konteynerini göster
-                // Liderlik tablosu zaten görünür kalıyor.
+               
+                authModal.style.display = 'none';      // Giriş ekranını gizle
+                gameContainer.style.display = 'flex';  // Oyun konteynerini göster
+                leaderboardAside.style.display = 'none'; // 🔥 Düzeltme: Liderlik tablosunu gizle
                 
                 primeAudio(); 
                 initializeGame(); 
@@ -308,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             gameContainer.style.display = 'none';
             authModal.style.display = 'flex'; // Giriş ekranını tekrar göster
+            leaderboardAside.style.display = 'flex'; // 🔥 Düzeltme: Liderlik tablosunu tekrar göster
         }, 1000); 
     }
 
