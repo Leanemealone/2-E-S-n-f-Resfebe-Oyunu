@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentScoreDisplay = document.getElementById('currentScore');
     const gameTimerDisplay = document.getElementById('gameTimer'); 
 
+    // YENİ: Ses Efektleri Elemanlarını yakala
+    const successSound = document.getElementById('successSound');
+    const errorSound = document.getElementById('errorSound');
+
     // --- Oyun Durumu ---
     let currentUserUid = null;
     let currentUserName = null;
@@ -388,10 +392,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 answeredWordIds.push(answeredWord.id);
             }
             
-            // Alert yerine displayMessage kullanıldı.
             displayMessage(`Tebrikler! +${totalPoints} puan kazandınız!`, 'success'); 
 
-            // YENİ: KONFETİ EFEKTİ
+            // YENİ: BAŞARI SESİNİ ÇAL
+            if (successSound) {
+                // Her seferinde baştan çalsın
+                successSound.currentTime = 0; 
+                successSound.play();
+            }
+
+            // KONFETİ EFEKTİ
             if (typeof confetti === 'function') { // Konfeti kütüphanesinin yüklendiğini kontrol et
                 confetti({
                     particleCount: 150, // Fırlatılacak parça sayısı
@@ -403,7 +413,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetchRandomWord(); // Yeni kelimeyi çek
         } else {
-            // Alert yerine displayMessage kullanıldı.
+            // YENİ: HATA SESİNİ ÇAL
+            if (errorSound) {
+                // Her seferinde baştan çalsın
+                errorSound.currentTime = 0; 
+                errorSound.play();
+            }
             displayMessage('Yanlış cevap! Tekrar deneyin.', 'error'); 
         }
     }
