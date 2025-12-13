@@ -1,462 +1,390 @@
-// index.html'de Firebase SDK'larının yüklendiği ve const db tanımlandığı varsayılır.
-document.addEventListener('DOMContentLoaded', () => {
-    // --- Arayüz Elemanları ---
-    const studentNameSelect = document.getElementById('studentNameSelect');
-    const gameContainer = document.querySelector('.game-container');
-    const authModal = document.getElementById('authModal');
-    const loginBtn = document.getElementById('loginBtn');
-    const studentPassword = document.getElementById('studentPassword');
-    const authMessage = document.getElementById('authMessage');
-    const leaderboardList = document.getElementById('topScores');
-    const gameMessage = document.getElementById('gameMessage'); // YENİ: Mesaj alanını yakala
+/* ======================================= */
+/* 1. GENEL AYARLAR VE SIFIRLAMALAR        */
+/* ======================================= */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #f0f4f7; /* Açık, göz yormayan zemin */
+    color: #333;
+}
+
+h1, h2 {
+    font-weight: 700;
+    color: #2c3e50; /* Koyu Mavi/Gri Başlıklar */
+    text-align: center;
+}
+
+/* ======================================= */
+/* 2. LAYOUT (Masaüstü ve Mobil Düzeni)    */
+/* ======================================= */
+
+/* Ana Sarıcı: Mobil için dikey, masaüstü için yatay sıralama */
+.wrapper {
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column; /* Varsayılan: Dikey (Mobil) */
+    align-items: center;
+    gap: 20px;
+}
+
+/* Masaüstü (768px üzeri) için Yan Yana Düzen */
+@media (min-width: 768px) {
+    .wrapper {
+        flex-direction: row; /* Yatay sırala */
+        align-items: flex-start;
+        justify-content: center;
+        gap: 20px;
+    }
+    .game-container {
+        flex-grow: 1; /* Ana oyun alanının büyümesini sağlar */
+        max-width: 800px;
+    }
+}
+
+/* Oyun Başlık (Header) Alanı - Skor ve Süre */
+.game-header {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    background-color: #3498db; /* Mavi arka plan */
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.score-display, .timer-display {
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.game-header span {
+    font-size: 1.1em;
+    color: #ffeb3b; /* Vurgu sarısı */
+    transition: color 0.5s; /* Renk değişimini yumuşat */
+}
+
+/* 🔥 ZAMANLAYICI KIRMIZI UYARI STİLİ 🔥 */
+/* .timer-display div'ine 'critical' sınıfı eklendiğinde içindeki span'i kırmızı yap */
+.timer-display.critical span {
+    color: #e74c3c; /* Hata Kırmızısı */
+    font-weight: 700;
+}
+
+
+/* ======================================= */
+/* 3. OYUN BİLEŞENLERİ                      */
+/* ======================================= */
+
+/* Oyun Konteyneri (İçerik) */
+.game-container {
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Görsel Alanı */
+.image-area {
+    width: 100%;
+    max-width: 600px;
+    margin: 15px auto;
+    border: 3px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.image-area img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Harf Kutuları (Yanıt Alanı) */
+.word-input-area {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 25px 0;
+}
+.letter-box {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #333;
+    background-color: #ecf0f1;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.letter-box.current-input {
+    border-color: #3498db; /* Mavi Vurgu */
+    background-color: #f9fbfb;
+}
+
+/* Sanal Klavye */
+#virtual-keyboard {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    background-color: #f0f4f7;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Klavye Tuşları */
+.key {
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.2s, transform 0.1s;
+    background-color: #1abc9c; /* Temel Turkuaz */
+    color: white;
+    border: none;
+    padding: 12px 5px;
+    font-size: 1em;
     
-    // Temel oyun elemanları
-    const gameImage = document.getElementById('gameImage');
-    const wordInputArea = document.querySelector('.word-input-area');
-    const virtualKeyboard = document.getElementById('virtual-keyboard');
-    const currentScoreDisplay = document.getElementById('currentScore');
-    const gameTimerDisplay = document.getElementById('gameTimer'); 
+    /* Masaüstü: 10 tuş sığacak şekilde ayar */
+    flex-basis: calc(9.5% - 6px); 
+    min-width: 30px;
+    box-shadow: 0 3px #16a085;
+}
 
-    // YENİ: Ses Efektleri Elemanlarını yakala
-    const successSound = document.getElementById('successSound');
-    const errorSound = document.getElementById('errorSound');
+.key:hover {
+    background-color: #16a085;
+    transform: translateY(-1px);
+}
+.key:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 #16a085;
+}
 
-    // --- Oyun Durumu ---
-    let currentUserUid = null;
-    let currentUserName = null;
-    let currentWord = '';
-    let currentLetters = [];
-    let currentInputIndex = 0;
+.key.delete-key {
+    background-color: #e74c3c; /* Kırmızı (Silme) */
+    box-shadow: 0 3px #c0392b;
+    flex-basis: calc(20% - 6px); /* Sil ve Onayla Tuşları daha geniş */
+}
+.key.delete-key:hover {
+    background-color: #c0392b;
+}
+.key.submit-key {
+    background-color: #3498db;
+    box-shadow: 0 3px #2980b9;
+    flex-basis: calc(20% - 6px);
+}
+.key.submit-key:hover {
+    background-color: #2980b9;
+}
+
+
+/* ======================================= */
+/* 4. LİDERLİK TABLOSU (ASIDE)             */
+/* ======================================= */
+.leaderboard {
+    width: 100%; 
+    max-width: 300px; 
+    padding: 25px;
+    background-color: #ecf0f1; /* Hafif bir gri */
+    color: #2c3e50;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #bdc3c7;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.leaderboard ul {
+    list-style: none;
+    padding: 0;
     
-    // OTURUM (SESSION) SKORU: Her girişte sıfırlanacak.
-    let currentScore = 0; 
-    
-    // KELİME TEKRARINI ÖNLEME DEĞİŞKENLERİ
-    let answeredWordIds = []; 
-    let allWords = []; 
+    /* 🔥 KRİTİK DEĞİŞİKLİKLER BURADA (Kaydırma Fix) 🔥 */
+    max-height: 400px; /* Sabit bir maksimum yükseklik */
+    overflow-y: auto;  /* Yükseklik aşıldığında kaydırma çubuğunu göster */
+    padding-right: 5px; 
+}
+/* KAYDIRMA ÇUBUĞU STİLİ (Opsiyonel) */
+.leaderboard ul::-webkit-scrollbar {
+    width: 8px;
+}
+.leaderboard ul::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 10px;
+}
+.leaderboard ul::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
 
-    // --- ZAMANLAYICI DEĞİŞKENLERİ ---
-    let gameTimer = 120; // TOPLAM OYUN SÜRESİ (2 dakika)
-    let countdownInterval;
+.leaderboard li {
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #bdc3c7;
+    transition: background-color 0.2s;
+}
 
-    gameContainer.style.display = 'none';
+.leaderboard li:hover {
+    background-color: #f7f7f7;
+}
 
-    // TEKRAR EKLENDİ: Tarayıcı kısıtlamasını aşmak için sesleri hazırlar.
-    function primeAudio() {
-        // play().catch() ile hata durumunda kodun durmasını engelliyoruz.
-        try {
-            if (successSound) {
-                successSound.play().catch(e => console.log("Success ses ön yükleme hatası:", e));
-                successSound.pause();
-                successSound.currentTime = 0;
-            }
-            if (errorSound) {
-                errorSound.play().catch(e => console.log("Error ses ön yükleme hatası:", e));
-                errorSound.pause();
-                errorSound.currentTime = 0;
-            }
-        } catch (e) {
-            console.error("Ses ön yükleme genel hatası:", e);
-        }
+/* ======================================= */
+/* 5. GİRİŞ MODALI STİLLERİ                */
+/* ======================================= */
+.modal {
+    display: flex; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+.modal-content h2 {
+    color: #3498db;
+}
+.modal-content input, .modal-content select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+.auth-btn {
+    width: 100%;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+.auth-btn:hover {
+     background-color: #16a085;
+}
+.error-message {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* ======================================= */
+/* 6. MOBİL OPTİMİZASYON (600px altı)      */
+/* ======================================= */
+@media (max-width: 600px) {
+    /* Genel Ayarlar */
+    .wrapper {
+        padding: 10px;
+    }
+    .game-header {
+        font-size: 1em;
+        padding: 10px;
     }
 
-    // ====================================================
-    // 1. GİRİŞ MODÜLÜ VE VERİ ÇEKME
-    // ====================================================
-
-    async function loadStudentList() {
-        try {
-            const snapshot = await db.collection('ogrenciler').get();
-            if (snapshot.empty) {
-                authMessage.textContent = 'Veritabanında öğrenci kaydı bulunamadı.';
-                return;
-            }
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const option = document.createElement('option');
-                option.value = doc.id; 
-                option.textContent = data.isim;
-                studentNameSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Öğrenci listesi yüklenirken hata:", error);
-            authMessage.textContent = "Öğrenci listesi yüklenemedi. Bağlantıyı kontrol edin.";
-        }
+    /* Harf Kutuları */
+    .letter-box {
+        width: 35px;
+        height: 35px;
+        font-size: 1.5em; 
     }
 
-    // Giriş Kontrolü
-    loginBtn.addEventListener('click', async () => {
-        const selectedUid = studentNameSelect.value;
-        const enteredPassword = studentPassword.value;
-        
-        if (!selectedUid) {
-            authMessage.textContent = "Lütfen listeden adınızı seçin.";
-            return;
-        }
-
-        try {
-            const studentDoc = await db.collection('ogrenciler').doc(selectedUid).get();
-            
-            if (!studentDoc.exists) {
-                authMessage.textContent = "Öğrenci kaydı veritabanında bulunamadı!";
-                return;
-            }
-
-            const studentData = studentDoc.data();
-            const expectedPassword = studentData.sifre;
-
-            if (enteredPassword === expectedPassword) {
-                currentUserUid = selectedUid;
-                currentUserName = studentNameSelect.options[studentNameSelect.selectedIndex].textContent;
-                
-                authModal.style.display = 'none';
-                gameContainer.style.display = 'flex';
-                
-                primeAudio(); // TEKRAR EKLENDİ: Sesleri burada hazırlıyoruz.
-                initializeGame(); 
-
-            } else {
-                authMessage.textContent = "Şifre hatalı. Lütfen tekrar deneyin.";
-            }
-        } catch (error) {
-            console.error("Giriş sırasında hata oluştu:", error);
-            authMessage.textContent = "Giriş işlemi sırasında bir hata oluştu.";
-        }
-    });
-
-    // ====================================================
-    // 2. SKOR YÖNETİMİ VE LİDERLİK TABLOSU (OTURUM BAZLI)
-    // ====================================================
-
-    function updateScoreDisplay(newScore) {
-        currentScore = newScore;
-        currentScoreDisplay.textContent = currentScore;
+    /* Klavye İyileştirmesi: Daha az sütun, daha büyük tuşlar */
+    #virtual-keyboard {
+        gap: 4px; /* Tuşlar arasındaki boşluğu azalt */
     }
-
-    // YENİ FONKSİYON: Mesajı ekranda gösterir (Alert yerine)
-    function displayMessage(text, type = 'success', duration = 2500) {
-        // Tipi (success veya error) ve süreyi (milisaniye) alır
-        
-        // Önceki mesajları ve sınıfları temizle
-        gameMessage.classList.remove('success', 'error', 'show');
-        
-        gameMessage.textContent = text;
-        gameMessage.classList.add(type, 'show'); // Yeni tipi ve 'show' sınıfını ekle
-
-        // Belirtilen süre sonra mesajı gizle
-        setTimeout(() => {
-            gameMessage.classList.remove('show');
-        }, duration);
-    }
-    
-    // KRİTİK FONKSİYON: Oturum skorunu veritabanına yeni bir kayıt olarak ekler
-    async function saveSessionScore() {
-        if (!currentUserUid || currentScore <= 0) {
-             console.log("Skor 0 veya eksi olduğu için kaydedilmedi.");
-             return; 
-        }
-
-        const sessionData = {
-            uid: currentUserUid,
-            score: currentScore, 
-            userName: currentUserName, 
-            timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-        };
-
-        try {
-            // Firestore'da 'skorlar' koleksiyonuna yeni bir belge ekle
-            const docRef = await db.collection('skorlar').add(sessionData); 
-            console.log(`✅ Oturum skoru başarıyla kaydedildi: ${currentScore}, Belge ID: ${docRef.id}`);
-        } catch (error) {
-            console.error("❌ SKOR KAYIT HATASI:", error);
-        }
-    }
-
-    function setupLeaderboardListener() {
-        // Liderlik tablosu en yüksek skorlu oturumları listeler.
-        db.collection('skorlar')
-            .orderBy('score', 'desc') 
-            .orderBy('timestamp', 'desc') 
-            .limit(10) 
-            .onSnapshot(snapshot => {
-                leaderboardList.innerHTML = '';
-                
-                snapshot.forEach((doc, index) => {
-                    const item = doc.data();
-                    const listItem = document.createElement('li');
-                    
-                    // Format: Ahmet 1550
-                    listItem.textContent = `${item.userName}`; 
-                    const scoreSpan = document.createElement('span');
-                    scoreSpan.textContent = item.score;
-                    listItem.appendChild(scoreSpan);
-                    leaderboardList.appendChild(listItem);
-                });
-            }, error => {
-                console.error("❌ LİDERLİK TABLOSU OKUMA HATASI:", error);
-            });
-    }
-
-    // ====================================================
-    // 3. OYUN BAŞLATMA VE MANTIK
-    // ====================================================
-
-    async function initializeGame() {
-        currentScore = 0; 
-        gameTimer = 120; 
-        answeredWordIds = []; 
-        updateScoreDisplay(0); 
-
-        await fetchAllWords(); 
-        setupLeaderboardListener(); 
-        startTimer(); 
-        fetchRandomWord(); 
+    .key {
+        font-size: 1em; /* Tuş fontu büyüdü */
+        padding: 10px 0; /* İç dolgu arttı */
+        /* 8 tuş sığacak şekilde ayarlandı (12.5% - 4px boşluk) */
+        flex-basis: calc(12.5% - 4px); 
     }
     
-    // Tüm kelimeleri veritabanından çek ve allWords dizisine kaydet
-    async function fetchAllWords() {
-        try {
-            const snapshot = await db.collection('gorseller').get();
-            if (snapshot.empty) {
-                // ALERT KALDIRILDI
-                displayMessage('Veritabanında görsel bulunamadı!', 'error', 5000);
-                allWords = [];
-                return;
-            }
-            allWords = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-        } catch (error) {
-            console.error("Tüm görseller çekilirken hata oluştu:", error);
-            // ALERT KALDIRILDI
-            displayMessage('Veritabanı bağlantısında sorun oluştu.', 'error', 5000);
-        }
-    }
-
-    // --- GÖRSEL VE KELİME ÇEKME (Tekrarı Önleme) ---
-    async function fetchRandomWord() {
-        const availableWords = allWords.filter(word => !answeredWordIds.includes(word.id));
-
-        if (availableWords.length === 0) {
-            clearInterval(countdownInterval);
-            // ALERT KALDIRILDI
-            displayMessage(`Tebrikler! Tüm kelimeleri cevapladınız! Skorunuz: ${currentScore}`, 'success', 5000);
-            handleGameOver(); 
-            return;
-        }
-
-        const randomIndex = Math.floor(Math.random() * availableWords.length);
-        const wordData = availableWords[randomIndex];
-        
-        currentWord = wordData.dogruKelime;
-        gameImage.src = wordData.gorselUrl;
-        
-        createLetterBoxes(wordData.uzunluk);
+    /* Aksiyon tuşları (SİL/ONAYLA) */
+    .key.submit-key, .key.delete-key {
+        /* Tek bir tuş 2 sütun genişliğinde olsun */
+        flex-basis: calc(25% - 4px); 
+        font-size: 0.9em;
     }
     
-    function createLetterBoxes(length) {
-        wordInputArea.innerHTML = '';
-        currentLetters = Array(length).fill('');
-        currentInputIndex = 0;
-
-        for (let i = 0; i < length; i++) {
-            const box = document.createElement('div');
-            box.className = 'letter-box';
-            box.setAttribute('data-index', i);
-            wordInputArea.appendChild(box);
-        }
-        updateFocus();
+    /* Mesaj Alanı - Sadece mobil için font küçültme */
+    .game-message {
+        padding: 10px;
+        font-size: 1em;
     }
-    
-    function updateFocus() {
-        document.querySelectorAll('.letter-box').forEach(box => {
-            box.classList.remove('current-input');
-        });
+}
+/* ======================================= */
+/* 7. OYUN İÇİ MESAJ ALANI (displayMessage)*/
+/* ======================================= */
+.game-message {
+    width: 90%;
+    max-width: 600px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2em;
+    border-radius: 8px;
+    opacity: 0; /* Başlangıçta gizli */
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-        if (currentInputIndex < currentLetters.length) {
-            const activeBox = document.querySelector(`.letter-box[data-index="${currentInputIndex}"]`);
-            if (activeBox) {
-                activeBox.classList.add('current-input');
-            }
-        }
-    }
+.game-message.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-    // --- ZAMANLAYICI MANTIK FONKSİYONLARI ---
+/* Doğru Cevap Mesajı */
+.game-message.success {
+    background-color: #2ecc71; /* Zümrüt Yeşili */
+    color: white;
+}
 
-    function startTimer() {
-        clearInterval(countdownInterval);
-        gameTimerDisplay.textContent = gameTimer;
-        
-        // Timer display elementinin kapsayıcısını yakala
-        const timerContainer = document.querySelector('.timer-display'); 
-        
-        // Başlangıçta kritik sınıfını temizle
-        timerContainer.classList.remove('critical');
-
-        countdownInterval = setInterval(() => {
-            gameTimer--;
-            gameTimerDisplay.textContent = gameTimer;
-
-            // YENİ KONTROL: 10 saniyenin altındaysa critical sınıfını ekle
-            if (gameTimer <= 10) {
-                timerContainer.classList.add('critical');
-            } else {
-                 timerContainer.classList.remove('critical');
-            }
-
-
-            if (gameTimer <= 0) {
-                clearInterval(countdownInterval);
-                handleGameOver(); 
-            }
-        }, 1000);
-    }
-
-    function handleGameOver() {
-        // Oyun bitince skoru kaydetme işlemini yapar.
-        saveSessionScore(); 
-        
-        const gameOverMessage = currentScore > 0 
-            ? `Oyun süreniz doldu! Toplam skorunuz: ${currentScore}.` 
-            : `Oyun süreniz doldu. Skor kazanamadınız.`;
-            
-        displayMessage(gameOverMessage, currentScore > 0 ? 'success' : 'error', 4000);
-        
-        // Mesajı gösterdikten sonra arayüzü gizle
-        setTimeout(() => {
-            gameContainer.style.display = 'none';
-            authModal.style.display = 'flex'; 
-        }, 1000); // Kullanıcının mesajı okuması için 1 saniye bekle
-
-    }
-
-    // ====================================================
-    // 4. SANAL KLAVYE İŞLEMLERİ
-    // ====================================================
-
-    function createKeyButton(text, dataKey) {
-        const button = document.createElement('button');
-        button.className = 'key';
-        button.textContent = text;
-        button.setAttribute('data-key', dataKey);
-        return button;
-    }
-
-    const keys = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ".split('');
-    keys.forEach(letter => {
-        const button = createKeyButton(letter, letter);
-        virtualKeyboard.appendChild(button);
-    });
-
-    const deleteKey = createKeyButton('SİL', 'DELETE');
-    const submitKey = createKeyButton('ONAYLA', 'SUBMIT');
-    deleteKey.classList.add('action-key', 'delete-key');
-    submitKey.classList.add('action-key', 'submit-key');
-    virtualKeyboard.appendChild(deleteKey);
-    virtualKeyboard.appendChild(submitKey);
-
-    virtualKeyboard.addEventListener('click', (event) => {
-        const key = event.target.closest('.key');
-        if (!key) return;
-
-        const keyValue = key.getAttribute('data-key');
-        
-        if (keyValue === 'DELETE') {
-            handleDelete();
-        } else if (keyValue === 'SUBMIT') {
-            handleSubmit();
-        } else if (keyValue && keyValue.length === 1) {
-            handleLetterInput(keyValue);
-        }
-    });
-
-    function handleLetterInput(letter) {
-        if (currentInputIndex < currentLetters.length) {
-            const activeBox = document.querySelector(`.letter-box[data-index="${currentInputIndex}"]`);
-            activeBox.textContent = letter;
-            currentLetters[currentInputIndex] = letter;
-            
-            if (currentInputIndex < currentLetters.length) {
-                currentInputIndex++;
-            }
-            updateFocus();
-        }
-    }
-
-    function handleDelete() {
-        if (currentInputIndex > 0) {
-            currentInputIndex--;
-        }
-        const activeBox = document.querySelector(`.letter-box[data-index="${currentInputIndex}"]`);
-        if (activeBox) {
-             activeBox.textContent = '';
-             currentLetters[currentInputIndex] = '';
-        }
-        updateFocus();
-    }
-
-    // --- KONTROL VE PUANLAMA ---
-    function handleSubmit() {
-        const enteredWord = currentLetters.join('');
-        // Alert yerine displayMessage kullanıldı.
-        if (enteredWord.length !== currentWord.length) {
-            displayMessage('Lütfen kelimeyi tamamlayın!', 'error'); 
-            return;
-        }
-        
-        if (gameTimer <= 0) {
-            handleGameOver();
-            return;
-        }
-
-        if (enteredWord === currentWord) {
-            const baseScore = 100;
-            const timeBonusPerSecond = 2;
-            const bonusScore = gameTimer * timeBonusPerSecond;
-            const totalPoints = baseScore + bonusScore;
-
-            // 1. OTURUM SKORUNU GÜNCELLE
-            const newSessionScore = currentScore + totalPoints;
-            updateScoreDisplay(newSessionScore); 
-
-            // 2. KELİME TEKRARINI ENGELLEME
-            const answeredWord = allWords.find(word => word.dogruKelime === currentWord);
-            if (answeredWord) {
-                answeredWordIds.push(answeredWord.id);
-            }
-            
-            displayMessage(`Tebrikler! +${totalPoints} puan kazandınız!`, 'success'); 
-
-            // YENİ: BAŞARI SESİNİ ÇAL
-            if (successSound) {
-                // Her seferinde baştan çalsın
-                successSound.currentTime = 0; 
-                successSound.play();
-            }
-
-            // KONFETİ EFEKTİ
-            if (typeof confetti === 'function') { // Konfeti kütüphanesinin yüklendiğini kontrol et
-                confetti({
-                    particleCount: 150, // Fırlatılacak parça sayısı
-                    spread: 90,        // Yayılma açısı
-                    origin: { y: 0.6 } // Ekranın ortasından biraz yukarıdan fırlat
-                });
-            }
-
-
-            fetchRandomWord(); // Yeni kelimeyi çek
-        } else {
-            // YENİ: HATA SESİNİ ÇAL
-            if (errorSound) {
-                // Her seferinde baştan çalsın
-                errorSound.currentTime = 0; 
-                errorSound.play();
-            }
-            displayMessage('Yanlış cevap! Tekrar deneyin.', 'error'); 
-        }
-    }
-
-    // Sayfa Yüklendiğinde Öğrenci Listesini Yükle
-    loadStudentList();
-});
+/* Yanlış Cevap Mesajı */
+.game-message.error {
+    background-color: #e74c3c; /* Kırmızı */
+    color: white;
+}
