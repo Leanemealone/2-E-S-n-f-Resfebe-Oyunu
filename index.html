@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görsel Adlandırma Oyunu</title>
+<link rel="stylesheet" href="style.css">
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+    // Firebase Yapılandırması
+    const firebaseConfig = {
+      apiKey: "AIzaSyDrxwoW_wSSS7OtQWcPZRRSrUeRZuGJVzY",
+      authDomain: "resfebe-oyunu-aa837.firebaseapp.com",
+      projectId: "resfebe-oyunu-aa837",
+      storageBucket: "resfebe-oyunu-aa837.firebasestorage.app",
+      messagingSenderId: "88066070966",
+      appId: "1:88066070966:web:f34cc7d2d900f4f9484917"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+</script>
+
+</head>
+<body>
+
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <h2>Öğrenci Girişi</h2>
+        
+        <label for="studentNameSelect">Adını Seç</label>
+        <select id="studentNameSelect" required>
+             <option value="">-- Adınızı Seçin --</option>
+             </select>
+        
+        <label for="studentPassword">Şifre</label>
+        <input type="password" id="studentPassword" placeholder="Şifreniz" required> 
+
+        <button id="loginBtn" class="auth-btn login-btn">Oyuna Başla</button>
+        <p id="authMessage" class="error-message"></p>
+    </div>
+</div>
+
+<div class="wrapper">
+    
+    <header class="game-header">
+        <div class="score-display">Oturum Puanı: <span id="currentScore">0</span></div>
+        <div class="timer-display">Kalan Süre: <span id="gameTimer">120</span>s</div>
+    </header>
+
+    <main class="game-container">
+        
+        <div id="gameMessage" class="game-message"></div>
+        
+        <div class="image-area">
+            <img src="balkon.png" alt="Tahmin Edilecek Görsel" id="gameImage">
+        </div>
+
+        <div class="word-input-area">
+            </div>
+
+        <div id="virtual-keyboard">
+            </div>
+    </main>
+
+    <aside class="leaderboard">
+        <h2>🏆 Liderlik Tablosu</h2>
+        <ul id="topScores">
+            </ul>
+    </aside>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.js"></script>
+
+<script src="app.js"></script>
+</body>
+</html>
