@@ -41,6 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     gameContainer.style.display = 'none';
 
+    // TEKRAR EKLENDİ: Tarayıcı kısıtlamasını aşmak için sesleri hazırlar.
+    function primeAudio() {
+        // play().catch() ile hata durumunda kodun durmasını engelliyoruz.
+        try {
+            if (successSound) {
+                successSound.play().catch(e => console.log("Success ses ön yükleme hatası:", e));
+                successSound.pause();
+                successSound.currentTime = 0;
+            }
+            if (errorSound) {
+                errorSound.play().catch(e => console.log("Error ses ön yükleme hatası:", e));
+                errorSound.pause();
+                errorSound.currentTime = 0;
+            }
+        } catch (e) {
+            console.error("Ses ön yükleme genel hatası:", e);
+        }
+    }
+
     // ====================================================
     // 1. GİRİŞ MODÜLÜ VE VERİ ÇEKME
     // ====================================================
@@ -93,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 authModal.style.display = 'none';
                 gameContainer.style.display = 'flex';
                 
+                primeAudio(); // TEKRAR EKLENDİ: Sesleri burada hazırlıyoruz.
                 initializeGame(); 
 
             } else {
@@ -157,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         db.collection('skorlar')
             .orderBy('score', 'desc') 
             .orderBy('timestamp', 'desc') 
-            .limit(10) 
+            .limit(30) // 🔥 FİX: LİMİT 10'DAN 30'A ÇIKARILDI 🔥
             .onSnapshot(snapshot => {
                 leaderboardList.innerHTML = '';
                 
@@ -268,9 +288,23 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(countdownInterval);
         gameTimerDisplay.textContent = gameTimer;
         
+        // Timer display elementinin kapsayıcısını yakala
+        const timerContainer = document.querySelector('.timer-display'); 
+        
+        // Başlangıçta kritik sınıfını temizle
+        timerContainer.classList.remove('critical');
+
         countdownInterval = setInterval(() => {
             gameTimer--;
             gameTimerDisplay.textContent = gameTimer;
+
+            // 🔥 FİX: ZAMANLAYICI KIRMIZI UYARI MANTIĞI KONTROLÜ 🔥
+            if (gameTimer <= 10) {
+                timerContainer.classList.add('critical');
+            } else {
+                 timerContainer.classList.remove('critical');
+            }
+
 
             if (gameTimer <= 0) {
                 clearInterval(countdownInterval);
