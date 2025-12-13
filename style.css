@@ -8,6 +8,8 @@ body {
     min-height: 100vh;
     background-color: #f0f4f7; /* Açık, göz yormayan zemin */
     color: #333;
+    /* 🔥 FİX: Mobil uyumluluk için, yatay kaydırmayı engelle */
+    overflow-x: hidden; 
 }
 
 h1, h2 {
@@ -39,7 +41,7 @@ h1, h2 {
         justify-content: center;
         gap: 20px;
     }
-    /* 🔥 FİX: Oyun ve Giriş Alanları aynı genişlikte büyür */
+    /* Oyun ve Giriş Alanları aynı genişlikte büyür */
     .game-container, .auth-container {
         flex-grow: 1; 
         max-width: 800px;
@@ -83,7 +85,7 @@ h1, h2 {
 /* 3. OYUN BİLEŞENLERİ                      */
 /* ======================================= */
 
-/* 🔥 FİX: Oyun Konteyneri ve Giriş Alanı ortak stil */
+/* Oyun Konteyneri ve Giriş Alanı ortak stil */
 .game-container, .auth-container {
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -213,6 +215,7 @@ h1, h2 {
     color: #2c3e50;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* JS ile display: none/flex kontrolü yapılacak. */
 }
 
 .leaderboard h2 {
@@ -230,7 +233,8 @@ h1, h2 {
     overflow-y: auto;  
     padding-right: 5px; 
 }
-/* KAYDIRMA ÇUBUĞU STİLİ (Opsiyonel) */
+
+/* Kaydırma Çubuğu Stili (Opsiyonel) */
 .leaderboard ul::-webkit-scrollbar {
     width: 8px;
 }
@@ -262,16 +266,15 @@ h1, h2 {
 /* 5. GİRİŞ EKRANI KONTEYNER STİLLERİ     */
 /* ======================================= */
 
-/* 🔥 FİX: Giriş İçerik Kutusu (Şeffaflık sorununu çözdü) */
 .modal-content {
-    background-color: #f7f7f7; /* Arka planı ver */
+    background-color: #f7f7f7; 
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     width: 90%;
     max-width: 400px;
     text-align: center;
-    margin: auto; /* Ortalamak için */
+    margin: auto; 
 }
 
 .modal-content h2 {
