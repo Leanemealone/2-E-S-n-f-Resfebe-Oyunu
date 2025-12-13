@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const studentPassword = document.getElementById('studentPassword');
     const authMessage = document.getElementById('authMessage');
     const leaderboardList = document.getElementById('topScores');
-    const leaderboardAside = document.getElementById('leaderboardAside'); // 🔥 YENİ: aside elementini yakala
+    // 🔥 Değişiklik: Leaderboard aside elementini yakala (index.html'e ID eklemen gerekebilir)
+    const leaderboardAside = document.querySelector('.leaderboard'); 
     const gameMessage = document.getElementById('gameMessage'); 
     
     // Temel oyun elemanları
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentWord = '';
     let currentLetters = [];
     let currentInputIndex = 0;
+    
     let currentScore = 0; 
     let answeredWordIds = []; 
     let allWords = []; 
@@ -37,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let countdownInterval;
 
     // 🔥 BAŞLANGIÇ GÖRÜNÜRLÜK DURUMU 🔥
-    gameContainer.style.display = 'none'; // Oyun gizli
-    leaderboardAside.style.display = 'block'; // Liderlik tablosu gösteriliyor
+    // Oyun gizli kalır, liderlik tablosu görünür kalır.
+    gameContainer.style.display = 'none';
 
     // Sesleri hazırlar.
     function primeAudio() {
@@ -109,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 authModal.style.display = 'none';
                 gameContainer.style.display = 'flex';
-                leaderboardAside.style.display = 'none'; // 🔥 FİX: Liderlik tablosunu gizle 🔥
+                // 🔥 ÖNEMLİ DEĞİŞİKLİK: leaderboardAside'ı GİZLEME ARTIK!
                 
                 primeAudio(); 
                 initializeGame(); 
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         db.collection('skorlar')
             .orderBy('score', 'desc') 
             .orderBy('timestamp', 'desc') 
-            .limit(30) 
+            .limit(30) // 30 skoru koruyoruz
             .onSnapshot(snapshot => {
                 leaderboardList.innerHTML = '';
                 
@@ -199,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateScoreDisplay(0); 
 
         await fetchAllWords(); 
-        // 🔥 FİX: setupLeaderboardListener buradan kaldırıldı! 🔥
+        // setupLeaderboardListener() artık initializeGame içinde değil, sayfa yüklenir yüklenmez çalışıyor.
         startTimer(); 
         fetchRandomWord(); 
     }
@@ -281,12 +283,12 @@ document.addEventListener('DOMContentLoaded', () => {
             gameTimer--;
             gameTimerDisplay.textContent = gameTimer;
 
+            // 10 saniye uyarı mantığı korunur
             if (gameTimer <= 10) {
                 timerContainer.classList.add('critical');
             } else {
                  timerContainer.classList.remove('critical');
             }
-
 
             if (gameTimer <= 0) {
                 clearInterval(countdownInterval);
@@ -307,13 +309,16 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             gameContainer.style.display = 'none';
             authModal.style.display = 'flex'; 
-            leaderboardAside.style.display = 'block'; // 🔥 FİX: Liderlik tablosunu tekrar göster 🔥
+            // 🔥 ÖNEMLİ DEĞİŞİKLİK: leaderboardAside'ı GÖSTERME ARTIK! Zaten görünürdü.
         }, 1000); 
     }
 
     // ====================================================
     // 4. SANAL KLAVYE İŞLEMLERİ
     // ====================================================
+    // (Bu kısım değişmediği için kısaltıldı)
+    
+    // ... [createKeyButton, keys, deleteKey, submitKey, event listener, handleLetterInput, handleDelete fonksiyonları aynı kalır] ...
 
     function createKeyButton(text, dataKey) {
         const button = document.createElement('button');
@@ -376,6 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFocus();
     }
 
+
     // --- KONTROL VE PUANLAMA ---
     function handleSubmit() {
         const enteredWord = currentLetters.join('');
@@ -431,5 +437,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 🔥 BAŞLANGIÇTA ÇALIŞACAK KOD 🔥
     loadStudentList();
-    setupLeaderboardListener(); // Liderlik tablosu sayfa yüklenir yüklenmez (login ekranında) çekilir.
+    setupLeaderboardListener(); // Liderlik tablosu sayfa yüklenir yüklenmez (login ekranında da) çekilir.
 });
