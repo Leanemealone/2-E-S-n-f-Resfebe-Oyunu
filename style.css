@@ -258,7 +258,7 @@ h1, h2 {
 /* 5. GİRİŞ MODALI STİLLERİ                */
 /* ======================================= */
 .modal {
-    display: flex; 
+   display: flex; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -268,15 +268,18 @@ h1, h2 {
     background-color: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
+    /* 🔥 YENİ: Masaüstünde modalın tam ortada görünmesi için */
+    transition: background-color 0.5s;
 }
-.modal-content {
-    background-color: #ffffff;
+background-color: #d685ff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
     width: 90%;
     max-width: 400px;
     text-align: center;
+    /* 🔥 YENİ: Liderlik tablosu göründüğünde ortalanmış hissi vermesi için */
+    margin: auto;
 }
 .modal-content h2 {
     color: #3498db;
@@ -388,3 +391,4 @@ h1, h2 {
     background-color: #e74c3c; /* Kırmızı */
     color: white;
 }
+
