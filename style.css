@@ -39,8 +39,9 @@ h1, h2 {
         justify-content: center;
         gap: 20px;
     }
-    .game-container {
-        flex-grow: 1; /* Ana oyun alanının büyümesini sağlar */
+    /* 🔥 FİX: Oyun ve Giriş Alanları aynı genişlikte büyür */
+    .game-container, .auth-container {
+        flex-grow: 1; 
         max-width: 800px;
     }
 }
@@ -68,11 +69,10 @@ h1, h2 {
 .game-header span {
     font-size: 1.1em;
     color: #ffeb3b; /* Vurgu sarısı */
-    transition: color 0.5s; /* Renk değişimini yumuşat */
+    transition: color 0.5s;
 }
 
-/* 🔥 ZAMANLAYICI KIRMIZI UYARI STİLİ 🔥 */
-/* .timer-display div'ine 'critical' sınıfı eklendiğinde içindeki span'i kırmızı yap */
+/* ZAMANLAYICI KIRMIZI UYARI STİLİ */
 .timer-display.critical span {
     color: #e74c3c; /* Hata Kırmızısı */
     font-weight: 700;
@@ -83,8 +83,8 @@ h1, h2 {
 /* 3. OYUN BİLEŞENLERİ                      */
 /* ======================================= */
 
-/* Oyun Konteyneri (İçerik) */
-.game-container {
+/* 🔥 FİX: Oyun Konteyneri ve Giriş Alanı ortak stil */
+.game-container, .auth-container {
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
@@ -93,6 +93,12 @@ h1, h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Sadece Giriş Alanına Özel Ayarlar */
+.auth-container {
+    justify-content: center; /* İçindeki modal-content'i dikeyde ortalar */
+    min-height: 400px; /* Oyun alanına yakın bir yükseklik verir */
 }
 
 /* Görsel Alanı */
@@ -164,7 +170,6 @@ h1, h2 {
     padding: 12px 5px;
     font-size: 1em;
     
-    /* Masaüstü: 10 tuş sığacak şekilde ayar */
     flex-basis: calc(9.5% - 6px); 
     min-width: 30px;
     box-shadow: 0 3px #16a085;
@@ -182,7 +187,7 @@ h1, h2 {
 .key.delete-key {
     background-color: #e74c3c; /* Kırmızı (Silme) */
     box-shadow: 0 3px #c0392b;
-    flex-basis: calc(20% - 6px); /* Sil ve Onayla Tuşları daha geniş */
+    flex-basis: calc(20% - 6px);
 }
 .key.delete-key:hover {
     background-color: #c0392b;
@@ -221,9 +226,8 @@ h1, h2 {
     list-style: none;
     padding: 0;
     
-    /* 🔥 KRİTİK DEĞİŞİKLİKLER BURADA (Kaydırma Fix) 🔥 */
-    max-height: 400px; /* Sabit bir maksimum yükseklik */
-    overflow-y: auto;  /* Yükseklik aşıldığında kaydırma çubuğunu göster */
+    max-height: 400px; 
+    overflow-y: auto;  
     padding-right: 5px; 
 }
 /* KAYDIRMA ÇUBUĞU STİLİ (Opsiyonel) */
@@ -255,32 +259,21 @@ h1, h2 {
 }
 
 /* ======================================= */
-/* 5. GİRİŞ MODALI STİLLERİ                */
+/* 5. GİRİŞ EKRANI KONTEYNER STİLLERİ     */
 /* ======================================= */
-.modal {
-   display: flex; 
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-    /* 🔥 YENİ: Masaüstünde modalın tam ortada görünmesi için */
-    transition: background-color 0.5s;
-}
-background-color: #ffffff;
+
+/* 🔥 FİX: Giriş İçerik Kutusu (Şeffaflık sorununu çözdü) */
+.modal-content {
+    background-color: #f7f7f7; /* Arka planı ver */
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     width: 90%;
     max-width: 400px;
     text-align: center;
-    /* 🔥 YENİ: Liderlik tablosu göründüğünde ortalanmış hissi vermesi için */
-    margin: auto;
+    margin: auto; /* Ortalamak için */
 }
+
 .modal-content h2 {
     color: #3498db;
 }
@@ -391,5 +384,3 @@ background-color: #ffffff;
     background-color: #e74c3c; /* Kırmızı */
     color: white;
 }
-
-
