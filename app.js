@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const studentPassword = document.getElementById('studentPassword');
     const authMessage = document.getElementById('authMessage');
     const leaderboardList = document.getElementById('topScores');
-    const gameMessage = document.getElementById('gameMessage'); // YENİ: Mesaj alanını yakala
+    const leaderboardAside = document.getElementById('leaderboardAside'); // 🔥 YENİ: aside elementini yakala
+    const gameMessage = document.getElementById('gameMessage'); 
     
     // Temel oyun elemanları
     const gameImage = document.getElementById('gameImage');
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentScoreDisplay = document.getElementById('currentScore');
     const gameTimerDisplay = document.getElementById('gameTimer'); 
 
-    // YENİ: Ses Efektleri Elemanlarını yakala
+    // Ses Efektleri Elemanlarını yakala
     const successSound = document.getElementById('successSound');
     const errorSound = document.getElementById('errorSound');
 
@@ -27,11 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentWord = '';
     let currentLetters = [];
     let currentInputIndex = 0;
-    
-    // OTURUM (SESSION) SKORU: Her girişte sıfırlanacak.
     let currentScore = 0; 
-    
-    // KELİME TEKRARINI ÖNLEME DEĞİŞKENLERİ
     let answeredWordIds = []; 
     let allWords = []; 
 
@@ -39,11 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameTimer = 120; // TOPLAM OYUN SÜRESİ (2 dakika)
     let countdownInterval;
 
-    gameContainer.style.display = 'none';
+    // 🔥 BAŞLANGIÇ GÖRÜNÜRLÜK DURUMU 🔥
+    gameContainer.style.display = 'none'; // Oyun gizli
+    leaderboardAside.style.display = 'block'; // Liderlik tablosu gösteriliyor
 
-    // TEKRAR EKLENDİ: Tarayıcı kısıtlamasını aşmak için sesleri hazırlar.
+    // Sesleri hazırlar.
     function primeAudio() {
-        // play().catch() ile hata durumunda kodun durmasını engelliyoruz.
         try {
             if (successSound) {
                 successSound.play().catch(e => console.log("Success ses ön yükleme hatası:", e));
@@ -111,8 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 authModal.style.display = 'none';
                 gameContainer.style.display = 'flex';
+                leaderboardAside.style.display = 'none'; // 🔥 FİX: Liderlik tablosunu gizle 🔥
                 
-                primeAudio(); // TEKRAR EKLENDİ: Sesleri burada hazırlıyoruz.
+                primeAudio(); 
                 initializeGame(); 
 
             } else {
@@ -133,23 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentScoreDisplay.textContent = currentScore;
     }
 
-    // YENİ FONKSİYON: Mesajı ekranda gösterir (Alert yerine)
     function displayMessage(text, type = 'success', duration = 2500) {
-        // Tipi (success veya error) ve süreyi (milisaniye) alır
-        
-        // Önceki mesajları ve sınıfları temizle
         gameMessage.classList.remove('success', 'error', 'show');
         
         gameMessage.textContent = text;
-        gameMessage.classList.add(type, 'show'); // Yeni tipi ve 'show' sınıfını ekle
+        gameMessage.classList.add(type, 'show'); 
 
-        // Belirtilen süre sonra mesajı gizle
         setTimeout(() => {
             gameMessage.classList.remove('show');
         }, duration);
     }
     
-    // KRİTİK FONKSİYON: Oturum skorunu veritabanına yeni bir kayıt olarak ekler
     async function saveSessionScore() {
         if (!currentUserUid || currentScore <= 0) {
              console.log("Skor 0 veya eksi olduğu için kaydedilmedi.");
@@ -164,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Firestore'da 'skorlar' koleksiyonuna yeni bir belge ekle
             const docRef = await db.collection('skorlar').add(sessionData); 
             console.log(`✅ Oturum skoru başarıyla kaydedildi: ${currentScore}, Belge ID: ${docRef.id}`);
         } catch (error) {
@@ -177,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         db.collection('skorlar')
             .orderBy('score', 'desc') 
             .orderBy('timestamp', 'desc') 
-            .limit(30) // 🔥 FİX: LİMİT 10'DAN 30'A ÇIKARILDI 🔥
+            .limit(30) 
             .onSnapshot(snapshot => {
                 leaderboardList.innerHTML = '';
                 
@@ -185,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const item = doc.data();
                     const listItem = document.createElement('li');
                     
-                    // Format: Ahmet 1550
                     listItem.textContent = `${item.userName}`; 
                     const scoreSpan = document.createElement('span');
                     scoreSpan.textContent = item.score;
@@ -208,17 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
         updateScoreDisplay(0); 
 
         await fetchAllWords(); 
-        setupLeaderboardListener(); 
+        // 🔥 FİX: setupLeaderboardListener buradan kaldırıldı! 🔥
         startTimer(); 
         fetchRandomWord(); 
     }
     
-    // Tüm kelimeleri veritabanından çek ve allWords dizisine kaydet
     async function fetchAllWords() {
         try {
             const snapshot = await db.collection('gorseller').get();
             if (snapshot.empty) {
-                // ALERT KALDIRILDI
                 displayMessage('Veritabanında görsel bulunamadı!', 'error', 5000);
                 allWords = [];
                 return;
@@ -229,18 +218,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
         } catch (error) {
             console.error("Tüm görseller çekilirken hata oluştu:", error);
-            // ALERT KALDIRILDI
             displayMessage('Veritabanı bağlantısında sorun oluştu.', 'error', 5000);
         }
     }
 
-    // --- GÖRSEL VE KELİME ÇEKME (Tekrarı Önleme) ---
     async function fetchRandomWord() {
         const availableWords = allWords.filter(word => !answeredWordIds.includes(word.id));
 
         if (availableWords.length === 0) {
             clearInterval(countdownInterval);
-            // ALERT KALDIRILDI
             displayMessage(`Tebrikler! Tüm kelimeleri cevapladınız! Skorunuz: ${currentScore}`, 'success', 5000);
             handleGameOver(); 
             return;
@@ -288,17 +274,13 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(countdownInterval);
         gameTimerDisplay.textContent = gameTimer;
         
-        // Timer display elementinin kapsayıcısını yakala
         const timerContainer = document.querySelector('.timer-display'); 
-        
-        // Başlangıçta kritik sınıfını temizle
         timerContainer.classList.remove('critical');
 
         countdownInterval = setInterval(() => {
             gameTimer--;
             gameTimerDisplay.textContent = gameTimer;
 
-            // 🔥 FİX: ZAMANLAYICI KIRMIZI UYARI MANTIĞI KONTROLÜ 🔥
             if (gameTimer <= 10) {
                 timerContainer.classList.add('critical');
             } else {
@@ -314,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleGameOver() {
-        // Oyun bitince skoru kaydetme işlemini yapar.
         saveSessionScore(); 
         
         const gameOverMessage = currentScore > 0 
@@ -323,12 +304,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
         displayMessage(gameOverMessage, currentScore > 0 ? 'success' : 'error', 4000);
         
-        // Mesajı gösterdikten sonra arayüzü gizle
         setTimeout(() => {
             gameContainer.style.display = 'none';
             authModal.style.display = 'flex'; 
-        }, 1000); // Kullanıcının mesajı okuması için 1 saniye bekle
-
+            leaderboardAside.style.display = 'block'; // 🔥 FİX: Liderlik tablosunu tekrar göster 🔥
+        }, 1000); 
     }
 
     // ====================================================
@@ -399,7 +379,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- KONTROL VE PUANLAMA ---
     function handleSubmit() {
         const enteredWord = currentLetters.join('');
-        // Alert yerine displayMessage kullanıldı.
         if (enteredWord.length !== currentWord.length) {
             displayMessage('Lütfen kelimeyi tamamlayın!', 'error'); 
             return;
@@ -416,11 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const bonusScore = gameTimer * timeBonusPerSecond;
             const totalPoints = baseScore + bonusScore;
 
-            // 1. OTURUM SKORUNU GÜNCELLE
             const newSessionScore = currentScore + totalPoints;
             updateScoreDisplay(newSessionScore); 
 
-            // 2. KELİME TEKRARINI ENGELLEME
             const answeredWord = allWords.find(word => word.dogruKelime === currentWord);
             if (answeredWord) {
                 answeredWordIds.push(answeredWord.id);
@@ -428,28 +405,23 @@ document.addEventListener('DOMContentLoaded', () => {
             
             displayMessage(`Tebrikler! +${totalPoints} puan kazandınız!`, 'success'); 
 
-            // YENİ: BAŞARI SESİNİ ÇAL
             if (successSound) {
-                // Her seferinde baştan çalsın
                 successSound.currentTime = 0; 
                 successSound.play();
             }
 
-            // KONFETİ EFEKTİ
-            if (typeof confetti === 'function') { // Konfeti kütüphanesinin yüklendiğini kontrol et
+            if (typeof confetti === 'function') {
                 confetti({
-                    particleCount: 150, // Fırlatılacak parça sayısı
-                    spread: 90,        // Yayılma açısı
-                    origin: { y: 0.6 } // Ekranın ortasından biraz yukarıdan fırlat
+                    particleCount: 150, 
+                    spread: 90,        
+                    origin: { y: 0.6 } 
                 });
             }
 
 
-            fetchRandomWord(); // Yeni kelimeyi çek
+            fetchRandomWord(); 
         } else {
-            // YENİ: HATA SESİNİ ÇAL
             if (errorSound) {
-                // Her seferinde baştan çalsın
                 errorSound.currentTime = 0; 
                 errorSound.play();
             }
@@ -457,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Sayfa Yüklendiğinde Öğrenci Listesini Yükle
+    // 🔥 BAŞLANGIÇTA ÇALIŞACAK KOD 🔥
     loadStudentList();
+    setupLeaderboardListener(); // Liderlik tablosu sayfa yüklenir yüklenmez (login ekranında) çekilir.
 });
