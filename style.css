@@ -2,31 +2,31 @@
 /* 1. GENEL AYARLAR VE SIFIRLAMALAR        */
 /* ======================================= */
 html, body {
-    /* 🔥 KESİN ÇÖZÜM İÇİN EKLEME/DÜZELTME (Zoom engellemeyi korur) */
-    [cite_start]height: 100%; [cite: 1]
-    [cite_start]width: 100%; [cite: 2]
-    position: fixed; [cite_start]/* Mobil görünümde sabit boyutta kalmasını sağlar [cite: 2]*/
-    [cite_start]top: 0; [cite: 2]
-    [cite_start]left: 0; [cite: 2]
+    /* 🔥 KESİN ÇÖZÜM İÇİN EKLEME/DÜZELTME */
+    height: 100%; 
+    width: 100%;
+    position: fixed; /* Mobil görünümde sabit boyutta kalmasını sağlar */
+    top: 0;
+    left: 0;
     
-    [cite_start]font-family: 'Poppins', sans-serif; [cite: 3]
-    [cite_start]margin: 0; [cite: 3]
-    [cite_start]padding: 0; [cite: 3]
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
     background-color: #96f2e0; 
     color: #333;
     /* 🔥 Mobil zoom'u önlemek için yatay kaydırmayı engeller */
-    [cite_start]overflow-x: hidden; [cite: 4]
+    overflow-x: hidden; 
 }
 body {
-    /* Dikey kaydırmayı engeller (Zoom engelleme için gerekli) */
-    [cite_start]overflow-y: hidden; [cite: 6]
+    /* Sadece dikey kaydırmayı engellemek için eklenebilir, ancak 'position: fixed' bunu zaten hallediyor. */
+    overflow-y: hidden;
 }
 
 
 h1, h2 {
-    [cite_start]font-weight: 700; [cite: 7]
+    font-weight: 700;
     color: #2c3e50; 
-    [cite_start]text-align: center; [cite: 7]
+    text-align: center;
 }
 
 /* ======================================= */
@@ -35,65 +35,65 @@ h1, h2 {
 
 /* Ana Sarıcı: Mobil için dikey, masaüstü için yatay sıralama */
 .wrapper {
-    /* 🔥 'position: fixed' olduğu için 'height: 100vh' yerine yüzde kullanıyoruz */
-    [cite_start]width: 95%; [cite: 8]
-    [cite_start]height: 100%; [cite: 8]
-    [cite_start]max-width: 1200px; [cite: 8]
-    margin: 0 auto; [cite_start]/* Margin 0 olmalı [cite: 8]*/
-    [cite_start]padding: 20px 0; [cite: 9]
-    [cite_start]display: flex; [cite: 9]
+    /* 🔥 'position: fixed' olduğu için 'height: 100vh' kullanmak yerine yüzde kullanıyoruz */
+    width: 95%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Margin 0 olmalı */
+    padding: 20px 0; /* İçerik için üstten ve alttan dolgu */
+    display: flex;
     flex-direction: column; 
-    [cite_start]align-items: center; [cite: 9]
-    [cite_start]gap: 20px; [cite: 9]
+    align-items: center;
+    gap: 20px;
     /* Wrapper içeriği kaydırılabilir hale getirilir (Tüm ekran sabitlendiği için) */
-    [cite_start]overflow-y: auto; [cite: 10]
-    [cite_start]box-sizing: border-box; [cite: 10]
+    overflow-y: auto; 
+    box-sizing: border-box; /* Padding'in toplam yüksekliği etkilemesini önler */
 }
 
 /* Masaüstü (768px üzeri) için Yan Yana Düzen */
 @media (min-width: 768px) {
     .wrapper {
-        [cite_start]flex-direction: row; [cite: 11]
-        [cite_start]align-items: flex-start; [cite: 12]
-        [cite_start]justify-content: center; [cite: 12]
-        [cite_start]gap: 20px; [cite: 12]
+        flex-direction: row; 
+        align-items: flex-start;
+        justify-content: center;
+        gap: 20px;
     }
     .game-container, .auth-container {
-        [cite_start]flex-grow: 1; [cite: 13]
-        [cite_start]max-width: 800px; [cite: 13]
+        flex-grow: 1; 
+        max-width: 800px;
     }
 }
 
 /* Oyun Başlık (Header) Alanı - Skor ve Süre */
 .game-header {
-    [cite_start]width: 100%; [cite: 14]
-    [cite_start]max-width: 1200px; [cite: 14]
-    [cite_start]display: flex; [cite: 14]
-    [cite_start]justify-content: space-around; [cite: 14]
-    [cite_start]padding: 10px 0; [cite: 14]
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
     background-color: #3498db; 
-    [cite_start]color: white; [cite: 14]
-    [cite_start]font-size: 1.2em; [cite: 14]
-    [cite_start]font-weight: bold; [cite: 14]
-    [cite_start]border-radius: 8px; [cite: 14]
-    [cite_start]box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); [cite: 15]
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .score-display, .timer-display {
-    [cite_start]padding: 5px 15px; [cite: 16]
-    [cite_start]display: flex; [cite: 16]
-    [cite_start]align-items: center; [cite: 16]
-    [cite_start]gap: 8px; [cite: 16]
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .game-header span {
-    [cite_start]font-size: 1.1em; [cite: 16]
+    font-size: 1.1em;
     color: #ffeb3b; 
-    [cite_start]transition: color 0.5s; [cite: 17]
+    transition: color 0.5s;
 }
 
 /* ZAMANLAYICI KIRMIZI UYARI STİLİ */
 .timer-display.critical span {
-    [cite_start]color: #e74c3c; [cite: 18]
-    [cite_start]font-weight: 700; [cite: 18]
+    color: #e74c3c; 
+    font-weight: 700;
 }
 
 
@@ -103,59 +103,59 @@ h1, h2 {
 
 /* Oyun Konteyneri ve Giriş Alanı ortak stil */
 .game-container, .auth-container {
-    [cite_start]background-color: white; [cite: 19]
-    [cite_start]box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); [cite: 19]
-    [cite_start]border-radius: 12px; [cite: 19]
-    [cite_start]padding: 20px; [cite: 19]
-    [cite_start]width: 100%; [cite: 19]
-    [cite_start]display: flex; [cite: 19]
-    [cite_start]flex-direction: column; [cite: 19]
-    [cite_start]align-items: center; [cite: 20]
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Sadece Giriş Alanına Özel Ayarlar */
 .auth-container {
-    [cite_start]justify-content: center; [cite: 21]
-    [cite_start]min-height: 400px; [cite: 21]
+    justify-content: center; 
+    min-height: 400px; 
 }
 
 /* Görsel Alanı */
 .image-area {
-    [cite_start]width: 100%; [cite: 22]
-    [cite_start]max-width: 600px; [cite: 22]
-    [cite_start]margin: 15px auto; [cite: 22]
-    [cite_start]border: 3px solid #ccc; [cite: 22]
-    [cite_start]box-shadow: 0 4px 8px rgba(0,0,0,0.1); [cite: 22]
-    [cite_start]background-color: white; [cite: 22]
-    [cite_start]border-radius: 6px; [cite: 22]
-    [cite_start]overflow: hidden; [cite: 22]
+    width: 100%;
+    max-width: 600px;
+    margin: 15px auto;
+    border: 3px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
 }
 .image-area img {
-    [cite_start]width: 100%; [cite: 23]
-    [cite_start]height: auto; [cite: 23]
-    [cite_start]display: block; [cite: 23]
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* Harf Kutuları (Yanıt Alanı) */
 .word-input-area {
-    [cite_start]display: flex; [cite: 24]
-    [cite_start]justify-content: center; [cite: 24]
-    [cite_start]gap: 8px; [cite: 24]
-    [cite_start]margin: 25px 0; [cite: 24]
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 25px 0;
 }
 .letter-box {
-    [cite_start]width: 50px; [cite: 25]
-    [cite_start]height: 50px; [cite: 25]
-    [cite_start]display: flex; [cite: 25]
-    [cite_start]justify-content: center; [cite: 25]
-    [cite_start]align-items: center; [cite: 25]
-    [cite_start]border: 3px solid #bdc3c7; [cite: 25]
-    [cite_start]border-radius: 6px; [cite: 25]
-    [cite_start]font-size: 2em; [cite: 25]
-    [cite_start]font-weight: 700; [cite: 25]
-    [cite_start]color: #333; [cite: 25]
-    [cite_start]background-color: #ecf0f1; [cite: 25]
-    [cite_start]transition: border-color 0.2s, background-color 0.2s; [cite: 26]
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #333;
+    background-color: #ecf0f1;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 .letter-box.current-input {
     border-color: #3498db; 
@@ -164,59 +164,59 @@ h1, h2 {
 
 /* Sanal Klavye */
 #virtual-keyboard {
-    [cite_start]width: 100%; [cite: 27]
-    [cite_start]max-width: 700px; [cite: 27]
-    [cite_start]display: flex; [cite: 27]
-    [cite_start]flex-wrap: wrap; [cite: 27]
-    [cite_start]justify-content: center; [cite: 27]
-    [cite_start]gap: 6px; [cite: 27]
-    [cite_start]padding: 10px; [cite: 27]
-    [cite_start]background-color: #f0f4f7; [cite: 27]
-    [cite_start]border-radius: 10px; [cite: 27]
-    [cite_start]margin-top: 20px; [cite: 28]
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    background-color: #f0f4f7;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 
 /* Klavye Tuşları */
 .key {
-    [cite_start]cursor: pointer; [cite: 29]
-    [cite_start]border-radius: 8px; [cite: 29]
-    [cite_start]font-weight: 600; [cite: 29]
-    [cite_start]transition: background-color 0.2s, transform 0.1s; [cite: 29]
-    [cite_start]background-color: #1abc9c; [cite: 29]
-    [cite_start]color: white; [cite: 29]
-    [cite_start]border: none; [cite: 29]
-    [cite_start]padding: 12px 5px; [cite: 29]
-    [cite_start]font-size: 1em; [cite: 29]
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.2s, transform 0.1s;
+    background-color: #1abc9c; 
+    color: white;
+    border: none;
+    padding: 12px 5px;
+    font-size: 1em;
     
-    [cite_start]flex-basis: calc(9.5% - 6px); [cite: 30]
-    [cite_start]min-width: 30px; [cite: 30]
-    [cite_start]box-shadow: 0 3px #16a085; [cite: 30]
+    flex-basis: calc(9.5% - 6px); 
+    min-width: 30px;
+    box-shadow: 0 3px #16a085;
 }
 
 .key:hover {
-    [cite_start]background-color: #16a085; [cite: 30]
-    [cite_start]transform: translateY(-1px); [cite: 30]
+    background-color: #16a085;
+    transform: translateY(-1px);
 }
 .key:active {
-    [cite_start]transform: translateY(3px); [cite: 31]
-    [cite_start]box-shadow: 0 0 #16a085; [cite: 31]
+    transform: translateY(3px);
+    box-shadow: 0 0 #16a085;
 }
 
 .key.delete-key {
-    [cite_start]background-color: #e74c3c; [cite: 32]
-    [cite_start]box-shadow: 0 3px #c0392b; [cite: 32]
-    [cite_start]flex-basis: calc(20% - 6px); [cite: 32]
+    background-color: #e74c3c; 
+    box-shadow: 0 3px #c0392b;
+    flex-basis: calc(20% - 6px);
 }
 .key.delete-key:hover {
-    [cite_start]background-color: #c0392b; [cite: 32]
+    background-color: #c0392b;
 }
 .key.submit-key {
-    [cite_start]background-color: #3498db; [cite: 33]
-    [cite_start]box-shadow: 0 3px #2980b9; [cite: 33]
-    [cite_start]flex-basis: calc(20% - 6px); [cite: 33]
+    background-color: #3498db;
+    box-shadow: 0 3px #2980b9;
+    flex-basis: calc(20% - 6px);
 }
 .key.submit-key:hover {
-    [cite_start]background-color: #2980b9; [cite: 34]
+    background-color: #2980b9;
 }
 
 
@@ -224,169 +224,121 @@ h1, h2 {
 /* 4. LİDERLİK TABLOSU (ASIDE)             */
 /* ======================================= */
 .leaderboard {
-    [cite_start]width: 100%; [cite: 35]
-    [cite_start]max-width: 300px; [cite: 35]
-    [cite_start]padding: 25px; [cite: 35]
+    width: 100%; 
+    max-width: 300px; 
+    padding: 25px;
     background-color: #ecf0f1; 
-    [cite_start]color: #2c3e50; [cite: 35]
-    [cite_start]border-radius: 12px; [cite: 35]
-    [cite_start]box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); [cite: 36]
+    color: #2c3e50;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     
-    /* 🔥 Skor tablosu düzeltmeleri */
-    [cite_start]display: flex; [cite: 36]
-    [cite_start]flex-direction: column; [cite: 37]
-    [cite_start]max-height: 550px; [cite: 38]
-    [cite_start]box-sizing: border-box; [cite: 38]
-    [cite_start]margin-bottom: 20px; [cite: 39]
+    /* 🔥 KESİN ÇÖZÜM: Flexbox Konteyneri olarak ayarla */
+    display: flex; 
+    flex-direction: column; /* İçeriği dikey sırala (Başlık üstte, Liste altta) */
+    /* Masaüstü ve mobil ekranlarda yüksekliği kısıtla */
+    max-height: 550px; 
+    box-sizing: border-box; 
+    
+    /* Mobil görünümde (alt alta sıralandığında) dikey alanda çok yer kaplamaması için margin ekle */
+    margin-bottom: 20px; 
 }
 
 .leaderboard h2 {
-    [cite_start]color: #2c3e50; [cite: 40]
-    [cite_start]border-bottom: 2px solid #bdc3c7; [cite: 40]
-    [cite_start]padding-bottom: 10px; [cite: 40]
-    [cite_start]margin-bottom: 15px; [cite: 40]
-    [cite_start]flex-shrink: 0; [cite: 40]
+    color: #2c3e50;
+    border-bottom: 2px solid #bdc3c7;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    /* Başlığın sabit kalmasını sağla */
+    flex-shrink: 0; 
 }
 
 .leaderboard ul {
-    [cite_start]list-style: none; [cite: 41]
-    [cite_start]padding: 0; [cite: 41]
-    [cite_start]margin: 0; [cite: 41]
+    list-style: none;
+    padding: 0;
+    margin: 0; 
     
-    /* 🔥 Listeyi kaydırılabilir yapar */
-    [cite_start]flex-grow: 1; [cite: 42]
-    [cite_start]overflow-y: auto; [cite: 43]
-    [cite_start]padding-right: 5px; [cite: 44]
-    [cite_start]-webkit-overflow-scrolling: touch; [cite: 45]
+    /* 🔥 KESİN ÇÖZÜM: Kalan alanı doldur ve sadece listeyi kaydırılabilir yap */
+    flex-grow: 1; /* Konteynerdeki kalan tüm dikey alanı kaplar */
+    overflow-y: auto; /* Listeyi kendi içinde kaydırılabilir yapar */
+    padding-right: 5px; /* Scrollbar için boşluk bırakılır */
+    
+    /* Mobil cihazlarda listedeki kaydırmanın sorunsuz çalışmasını sağlar */
+    -webkit-overflow-scrolling: touch; 
 }
 
 /* Kaydırma Çubuğu Stili (Opsiyonel) */
 .leaderboard ul::-webkit-scrollbar {
-    [cite_start]width: 8px; [cite: 46]
+    width: 8px;
 }
 .leaderboard ul::-webkit-scrollbar-thumb {
-    [cite_start]background: #bdc3c7; [cite: 46]
-    [cite_start]border-radius: 10px; [cite: 46]
+    background: #bdc3c7;
+    border-radius: 10px;
 }
 .leaderboard ul::-webkit-scrollbar-track {
-    [cite_start]background: #f1f1f1; [cite: 47]
+    background: #f1f1f1;
 }
 
 .leaderboard li {
-    [cite_start]padding: 10px; [cite: 48]
-    [cite_start]margin-bottom: 8px; [cite: 48]
-    [cite_start]background-color: #ffffff; [cite: 48]
-    [cite_start]border-radius: 6px; [cite: 48]
-    [cite_start]font-weight: 600; [cite: 48]
-    [cite_start]display: flex; [cite: 48]
-    [cite_start]justify-content: space-between; [cite: 48]
-    [cite_start]border: 1px solid #bdc3c7; [cite: 48]
-    [cite_start]transition: background-color 0.2s; [cite: 48]
-    flex-shrink: 0; 
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #bdc3c7;
+    transition: background-color 0.2s;
 }
 
 .leaderboard li:hover {
-    [cite_start]background-color: #f7f7f7; [cite: 49]
+    background-color: #f7f7f7;
 }
 
 /* ======================================= */
 /* 5. GİRİŞ EKRANI KONTEYNER STİLLERİ     */
 /* ======================================= */
 
-/* authModal (Giriş Ekranı Kapsayıcısı) */
-#authModal {
-    /* Tüm ekranı kapla ve Absolute Centering için zemin ol */
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Karartma efekti */
-    z-index: 1000; 
-    display: block; 
-    padding: 20px; /* Kenarlara yapışmasını engeller */
-    box-sizing: border-box;
-}
-
 .modal-content {
-    background-color: #ffffff; /* Beyazı daha temiz yap (Estetik) */
-    padding: 35px; /* İç boşluğu biraz artır (Estetik) */
-    border-radius: 16px; /* Daha yumuşak köşeler (Estetik) */
-    
-    /* 🔥 GÖLGE: Daha derin ve yumuşak bir dış gölge (Estetik) */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
-    
-    /* 🔥 KRİTİK HİZALAMA DÜZELTMESİ (Absolute Centering) */
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-
-    /* GENİŞLİK ve Dikey Taşan İçerik Kontrolü (Boyutlandırma) */
-    width: 90%; 
+    background-color: #f7f7f7; 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 90%;
     max-width: 400px;
-    max-height: 90vh; /* Mobil ekranlara sığsın */
-    overflow-y: auto; /* İçerik taşarsa kaydırılabilir olsun */
-    
     text-align: center;
-    box-sizing: border-box; 
-    -webkit-overflow-scrolling: touch;
+    margin: auto; 
 }
 
 .modal-content h2 {
-    color: #3498db; /* Mavi renk daha keskin (Estetik) */
-    font-size: 1.8em; /* Başlığı biraz büyüt (Estetik) */
-    margin-bottom: 25px; /* Alt boşluğu artır (Estetik) */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05); 
-    font-weight: 700;
-    text-align: center;
-    flex-shrink: 0; 
-    margin-top: 0;
+    color: #3498db;
 }
 .modal-content input, .modal-content select {
-    [cite_start]width: 100%; [cite: 52]
-    padding: 15px; /* Padding artırıldı (Estetik) */
-    margin-bottom: 18px; /* Margin artırıldı (Estetik) */
-    border-radius: 8px; /* Daha yumuşak köşeler (Estetik) */
-    border: 2px solid #ecf0f1; /* Kalın ve açık gri çerçeve (Estetik) */
-    [cite_start]box-sizing: border-box; [cite: 52]
-    font-size: 1.1em; /* Font büyütüldü (Estetik) */
-    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1em;
 }
-/* Odaklandığında Mavi çerçeve ve hafif gölge ile tepki ver (Estetik) */
-.modal-content input:focus, .modal-content select:focus {
-    border-color: #3498db; 
-    outline: none; 
-    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
-}
-
 .auth-btn {
-    [cite_start]width: 100%; [cite: 53]
-    [cite_start]background-color: #1abc9c; [cite: 53]
-    [cite_start]color: white; [cite: 53]
-    [cite_start]border: none; [cite: 53]
-    padding: 15px; /* Daha kalın bir buton (Estetik) */
-    [cite_start]font-weight: 700; [cite: 54]
-    [cite_start]cursor: pointer; [cite: 54]
-    border-radius: 10px; /* Daha yumuşak köşeler (Estetik) */
-    font-size: 1.1em; /* Font büyütüldü (Estetik) */
-    
-    /* 3D/Derinlik Efekti (Estetik) */
-    box-shadow: 0 4px #16a085; 
-    
-    [cite_start]transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s; [cite: 54]
+    width: 100%;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
 }
 .auth-btn:hover {
-     [cite_start]background-color: #16a085; [cite: 54]
-}
-.auth-btn:active {
-    transform: translateY(4px); /* Tıklandığında aşağı insin */
-    box-shadow: 0 0 #16a085; /* Tıklandığında gölge kalksın */
+     background-color: #16a085;
 }
 .error-message {
-    [cite_start]color: #e74c3c; [cite: 55]
-    [cite_start]font-weight: bold; [cite: 55]
-    [cite_start]margin-top: 15px; [cite: 55]
+    color: #e74c3c;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
 /* ======================================= */
@@ -395,73 +347,74 @@ h1, h2 {
 @media (max-width: 600px) {
     /* Genel Ayarlar */
     .wrapper {
-        [cite_start]padding: 10px; [cite: 56]
+        padding: 10px;
     }
     .game-header {
-        [cite_start]font-size: 1em; [cite: 57]
-        [cite_start]padding: 10px; [cite: 57]
+        font-size: 1em;
+        padding: 10px;
     }
 
     /* Harf Kutuları */
     .letter-box {
-        [cite_start]width: 35px; [cite: 58]
-        [cite_start]height: 35px; [cite: 58]
-        [cite_start]font-size: 1.5em; [cite: 58]
+        width: 35px;
+        height: 35px;
+        font-size: 1.5em; 
     }
 
     /* Klavye İyileştirmesi: Daha az sütun, daha büyük tuşlar */
     #virtual-keyboard {
-        [cite_start]gap: 4px; [cite: 59]
+        gap: 4px; 
     }
     .key {
-        [cite_start]font-size: 1em; [cite: 60]
-        [cite_start]padding: 10px 0; [cite: 60]
-        [cite_start]flex-basis: calc(12.5% - 4px); [cite: 60]
+        font-size: 1em; 
+        padding: 10px 0; 
+        flex-basis: calc(12.5% - 4px); 
     }
     
     /* Aksiyon tuşları (SİL/ONAYLA) */
     .key.submit-key, .key.delete-key {
-        [cite_start]flex-basis: calc(25% - 4px); [cite: 61]
-        [cite_start]font-size: 0.9em; [cite: 61]
+        flex-basis: calc(25% - 4px); 
+        font-size: 0.9em;
     }
     
     /* Mesaj Alanı - Sadece mobil için font küçültme */
     .game-message {
-        [cite_start]padding: 10px; [cite: 62]
-        [cite_start]font-size: 1em; [cite: 62]
+        padding: 10px;
+        font-size: 1em;
     }
 }
 /* ======================================= */
 /* 7. OYUN İÇİ MESAJ ALANI (displayMessage)*/
 /* ======================================= */
 .game-message {
-    [cite_start]width: 90%; [cite: 63]
-    [cite_start]max-width: 600px; [cite: 63]
-    [cite_start]padding: 15px; [cite: 63]
-    [cite_start]margin-bottom: 15px; [cite: 63]
-    [cite_start]text-align: center; [cite: 63]
-    [cite_start]font-weight: 700; [cite: 63]
-    [cite_start]font-size: 1.2em; [cite: 63]
-    [cite_start]border-radius: 8px; [cite: 63]
-    [cite_start]opacity: 0; [cite: 63]
-    [cite_start]visibility: hidden; [cite: 64]
-    [cite_start]transition: opacity 0.5s, visibility 0.5s; [cite: 64]
-    [cite_start]box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); [cite: 64]
+    width: 90%;
+    max-width: 600px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2em;
+    border-radius: 8px;
+    opacity: 0; 
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .game-message.show {
-    [cite_start]opacity: 1; [cite: 65]
-    [cite_start]visibility: visible; [cite: 65]
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Doğru Cevap Mesajı */
 .game-message.success {
-    [cite_start]background-color: #2ecc71; [cite: 66]
-    [cite_start]color: white; [cite: 66]
+    background-color: #2ecc71; 
+    color: white;
 }
 
 /* Yanlış Cevap Mesajı */
 .game-message.error {
-    [cite_start]background-color: #e74c3c; [cite: 66]
-    [cite_start]color: white; [cite: 66]
+    background-color: #e74c3c; 
+    color: white;
 }
+
