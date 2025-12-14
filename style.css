@@ -390,7 +390,7 @@ html, body {
     }
     @media (max-width: 600px) {
     .modal-content {
-        width: 80%;
+        width: 70%;
         max-width: 320px;
     }
 }
@@ -428,6 +428,7 @@ html, body {
     background-color: #e74c3c; 
     color: white;
 }
+
 
 
 
