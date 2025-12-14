@@ -287,7 +287,7 @@ html, body {
 .leaderboard li {
     padding: 10px;
     margin-bottom: 8px;
-    background-color: #ffffff;
+    background-color: #1abc9c;
     border-radius: 6px;
     font-weight: 600;
     display: flex;
@@ -435,6 +435,7 @@ html, body {
     background-color: #e74c3c; 
     color: white;
 }
+
 
 
 
