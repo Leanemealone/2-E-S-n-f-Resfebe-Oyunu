@@ -28,6 +28,12 @@ h1, h2 {
     color: #2c3e50; 
     text-align: center;
 }
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+    touch-action: pan-y;
+}
 
 /* ======================================= */
 /* 2. LAYOUT (Masaüstü ve Mobil Düzeni)    */
@@ -384,7 +390,7 @@ h1, h2 {
     }
     @media (max-width: 600px) {
     .modal-content {
-        width: 85%;
+        width: 80%;
         max-width: 320px;
     }
 }
@@ -422,5 +428,6 @@ h1, h2 {
     background-color: #e74c3c; 
     color: white;
 }
+
 
 
