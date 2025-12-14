@@ -233,7 +233,7 @@ html, body {
     width: 100%; 
     max-width: 300px; 
     padding: 25px;
-    background-color: #ecf0f1; 
+    background-color: #0b1f4d; 
     color: #2c3e50;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -312,7 +312,7 @@ html, body {
 }
 
 .modal-content {
-    background-color: #f7f7f7; 
+    background-color: #b2e3aa; 
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -435,6 +435,7 @@ html, body {
     background-color: #e74c3c; 
     color: white;
 }
+
 
 
 
