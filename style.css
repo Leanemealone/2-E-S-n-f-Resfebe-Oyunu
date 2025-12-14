@@ -109,7 +109,7 @@ html, body {
 
 /* Oyun Konteyneri ve Giriş Alanı ortak stil */
 .game-container, .auth-container {
-    background-color: white;
+    background-color: #c1ece3;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     padding: 20px;
@@ -435,6 +435,7 @@ html, body {
     background-color: #e74c3c; 
     color: white;
 }
+
 
 
 
