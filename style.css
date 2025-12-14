@@ -362,6 +362,14 @@ html, body {
     .wrapper {
         padding: 10px;
     }
+
+    .game-container,
+    .auth-container {
+        width: 92%;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
     .game-header {
         font-size: 1em;
         padding: 10px;
@@ -435,6 +443,7 @@ html, body {
     background-color: #e74c3c; 
     color: white;
 }
+
 
 
 
