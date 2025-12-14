@@ -382,6 +382,11 @@ h1, h2 {
         padding: 10px;
         font-size: 1em;
     }
+    @media (max-width: 600px) {
+    .modal-content {
+        width: 85%;
+        max-width: 320px;
+    }
 }
 /* ======================================= */
 /* 7. OYUN İÇİ MESAJ ALANI (displayMessage)*/
@@ -417,4 +422,5 @@ h1, h2 {
     background-color: #e74c3c; 
     color: white;
 }
+
 
